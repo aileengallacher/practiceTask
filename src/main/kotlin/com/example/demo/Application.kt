@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.Table
 
 @SpringBootApplication
 class DemoApplication
@@ -45,6 +46,6 @@ class Product(
 		var weight: String? = null,
 		@Id
 		@GeneratedValue
-		var productId: Long,
+		var productId: Long? = null,
 		var category: String? = null
 )
