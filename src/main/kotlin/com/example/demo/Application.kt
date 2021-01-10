@@ -46,6 +46,6 @@ class Product(
 		var weight: String? = null,
 		@Id
 		@GeneratedValue
-		var productId: Long? = null,
+		var productId: Long,
 		var category: String? = null
 )
