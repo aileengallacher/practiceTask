@@ -5,10 +5,12 @@ import org.springframework.boot.runApplication
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+
 
 @SpringBootApplication
 class DemoApplication
@@ -18,10 +20,10 @@ fun main(args: Array<String>) {
 }
 
 @RestController
-class ProductController (val productRepository: ProductRepository){
+class ProductController(val productRepository: ProductRepository){
 
 	@PostMapping("/product")
-	fun addProduct(@RequestBody product : Product) {
+	fun addProduct(@RequestBody product: Product) {
 		productRepository.save(product)
 	}
 
@@ -30,25 +32,31 @@ class ProductController (val productRepository: ProductRepository){
 		return productRepository.findAll().toList()
 	}
 
-	@GetMapping("/product/{category}")
-	fun getProductByCategory(@PathVariable("category")category: String): Product {
+	@GetMapping("/product/category/{category}")
+	fun getProductByCategory(@PathVariable(value = "category") category: String): List<Product> {
 		return productRepository.findByCategory(category)
+	}
+
+	@GetMapping("/product/{productId}")
+	fun getProductById(@PathVariable("productId") productId: Long) : Optional<Product> {
+		return productRepository.findById(productId)
 	}
 }
 
 @Component
 interface ProductRepository : CrudRepository<Product, Long> {
-	fun findByCategory(category: String) : Product
+	fun findByCategory(category: String) : List<Product>
+	override fun findById(productId: Long) : Optional<Product>
 }
 
 @Entity
 class Product(
 		@Id
-		@GeneratedValue(strategy= GenerationType.AUTO)
+		@GeneratedValue(strategy = GenerationType.AUTO)
 		var productId: Long,
 		var category: String? = null,
 		var price: String? = null,
 		var productName: String? = null,
 		var weight: String? = null,
 
-)
+		)
