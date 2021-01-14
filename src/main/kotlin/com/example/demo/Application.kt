@@ -3,6 +3,7 @@ package com.example.demo
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.repository.CrudRepository
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -23,6 +24,7 @@ fun main(args: Array<String>) {
 class ProductController(val productRepository: ProductRepository){
 
 	@PostMapping("/product")
+	@ResponseStatus(code = HttpStatus.CREATED)
 	fun addProduct(@RequestBody product: Product) {
 		productRepository.save(product)
 	}
@@ -57,6 +59,5 @@ class Product(
 		var category: String? = null,
 		var price: String? = null,
 		var productName: String? = null,
-		var weight: String? = null,
-
-		)
+		var weight: String? = null
+)
